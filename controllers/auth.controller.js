@@ -28,7 +28,7 @@ exports.registerController = (req, res) => {
       if (user) {
         return res.status(400).json({
           error: "Email is taken"
-        })
+        });
       }
     });
 
@@ -42,7 +42,7 @@ exports.registerController = (req, res) => {
       {
         expiresIn: "15m"
       }
-    )
+    );
 
     //Email data sending
     const emailData = {
@@ -65,7 +65,52 @@ exports.registerController = (req, res) => {
     }).catch(err => {
       return res.status(400).json({
         error: errorHandler(err)
-      })
-    })
+      });
+    });
+  }
+};
+
+//Activación y guardado en la base de datos
+exports.activationController = (req, res) => {
+  const { token } = req.body;
+  if (token) {
+    //Verify the token is valid or not or expired
+    jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION,
+      (err, decoded) => {
+        if (err) {
+          return res.status(401).json({
+            error: "Expired Token. Signup again"
+          });
+        } else {
+          //Si es valida guardar en la base de datos
+          //Obtener el nombre de la contraseña de correo electrónico del token
+          const { name, email, password } = jwt.decode(token);
+
+          const user = new User({
+            name,
+            email,
+            password
+          });
+
+          user.save((err, user) => {
+            if (err) {
+              return res.status(401).json({
+                error: errorHandler(err)
+              });
+            } else {
+              return res.json({
+                success: true,
+                message: "Signup success",
+                user
+              });
+            }
+          });
+        }
+      }
+    );
+  } else {
+    return res.json({
+      message: "Error happening please try again"
+    });
   }
 };
