@@ -14,7 +14,7 @@ exports.registerController = (req, res) => {
   const { name, email, password } = req.body;
   const errors = validationResult(req);
 
-  //Validation to req.body we will create custom validation in seconds
+  //Validación para req.body crearemos una validación personalizada en segundos
   if (!errors.isEmpty()) {
     const firstError = errors.array().map(error => error.msg)[0];
     return res.status(422).json({
@@ -24,7 +24,7 @@ exports.registerController = (req, res) => {
     User.findOne({
       email
     }).exec((err, user) => {
-      //If user exists
+      //Si existe el usuario
       if (user) {
         return res.status(400).json({
           error: "Email is taken"
@@ -44,7 +44,7 @@ exports.registerController = (req, res) => {
       }
     );
 
-    //Email data sending
+    //Envío de datos por correo electrónico
     const emailData = {
       from: process.env.EMAIL_FROM,
       to: email,
@@ -74,7 +74,7 @@ exports.registerController = (req, res) => {
 exports.activationController = (req, res) => {
   const { token } = req.body;
   if (token) {
-    //Verify the token is valid or not or expired
+    //Verifique que el token sea válido o no esté vencido
     jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION,
       (err, decoded) => {
         if (err) {
