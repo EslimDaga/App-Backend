@@ -11,7 +11,7 @@ Inicio de sesión de el Usuario
 http://localhost:5000/api/login
 ```
 
-### Register
+### Registro(POST)
 Registro de el Usuario
 
 ```
@@ -28,7 +28,7 @@ Con el Json
 }
 ```
 
-### Activación
+### Activación(POST)
 Activación del registro para el Usuario
 
 ```
