@@ -18,9 +18,27 @@ Registro de el Usuario
 http://localhost:5000/api/register
 ```
 
-### Validation
-Validación del registro para el Usuario
+Con el Json
 
 ```
-http://localhost:5000/api/validation
+{
+    "name" : "Jhon Doe",
+    "email" : "mail@mail.com",
+    "password" : "password"
+}
+```
+
+### Activación
+Activación del registro para el Usuario
+
+```
+http://localhost:5000/api/activation
+```
+
+Con el Json
+
+```
+{
+  "token" : "token"
+}
 ```
